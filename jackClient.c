@@ -59,9 +59,14 @@ int process(jack_nframes_t nframes, void* emptyshell)
             {
                 if(in_event.buffer[1] == current->next->key )
                 {
+                        if (current->next->isPlaying == 1 && in_event.buffer[0] == 159)
+                        {
+                            current->next->pos = 0;
+                        }
 
                         if (current->next->isPlaying == 0 && in_event.buffer[0] == 159)
                         {
+                            current->next->pos = 0;
                             current->next->isPlaying =1;
                         }
 
@@ -85,7 +90,9 @@ int process(jack_nframes_t nframes, void* emptyshell)
         {
             for (int i = 0; i < (int) nframes; i++)
                 {
-                    mix[i] += current->next->stream[current->next->pos + i];
+                    mix[i] += (float) SliceVolume(current->next) * current->next->stream[current->next->pos + i] ;
+                    if(mix[i]>1) 
+                    {mix[i]=1;}
                 }
             current->next->pos+=nframes;
            
@@ -100,7 +107,6 @@ int process(jack_nframes_t nframes, void* emptyshell)
         
     //outputBufferL[i] = sample1[i]; 
     //outputBufferR[i] = sample1[i]; 
-    printf("%i \n",*&EmptySlice.next->pos); 
     }
             memcpy(outputBufferL, mix, sizeof(float)*nframes);
             memcpy(outputBufferR, mix, sizeof(float)*nframes);
@@ -136,7 +142,7 @@ int main(int argc, char * argv[])
     
 
   //printf("%i", sizeof(Object1.stream[2]) * sizeof(float));
-  SliceAutoSlice(Object1, "forward", 4);
+  SliceAutoSlice(Object1, "forward", 16);
     while(ptr->next != NULL)
         {
             ptr->next->pos = 0;

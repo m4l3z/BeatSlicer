@@ -9,10 +9,10 @@
 //Definition of Envelope
 
 struct Envelope {
-    double attack_t;
-    double decay_v, decay_t;
-    double sustain_v, sustain_t;
-    double release_t;
+    float attack_t;
+    float decay_v, decay_t;
+    float sustain_v, sustain_t;
+    float release_t;
 
 };
 

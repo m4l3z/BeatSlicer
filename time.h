@@ -1,3 +1,7 @@
+#ifndef TIME_H 
+#define TIME_H
+
+
 #include <stdio.h>
 
 //convert the number of beats at a certain bpm to a time period
@@ -11,3 +15,5 @@ int time_to_frame(float time, int samplerate)
 {
     return time * samplerate;
 }
+
+#endif 
