@@ -41,6 +41,7 @@ int process(jack_nframes_t nframes, void* emptyshell)
   //Object1.pos+= nframes;
   // this is the intresting part, we work with each sample of audio data
   //struct Slice *ptr  = EmptySlice.next;
+  struct Slice *current  =  malloc(sizeof(struct Slice));
   current =  &EmptySlice;
   jack_nframes_t event_count = jack_midi_get_event_count(inputBuffer);
   // one by one, copying them across. Try multiplying the input by 0.5,
@@ -50,8 +51,8 @@ int process(jack_nframes_t nframes, void* emptyshell)
     if(event_count > 0)
     {
     jack_midi_event_get(&in_event, inputBuffer, i);
-    printf("Type (159 = NOTEON, 143 = NOTEOFF) : %i , Note : %i, Velocity : %i \n", in_event.buffer[0],
-            in_event.buffer[1], in_event.buffer[2]);
+    //printf("Type (159 = NOTEON, 143 = NOTEOFF) : %i , Note : %i, Velocity : %i \n", in_event.buffer[0],
+     //       in_event.buffer[1], in_event.buffer[2]);
     
     current =  &EmptySlice;
     while(current->next != NULL)
@@ -69,23 +70,25 @@ int process(jack_nframes_t nframes, void* emptyshell)
                 current= current->next;
     }
     
+    event_count = 0;
 
   }
-    event_count = 0;
   } 
     // copy data from input to output. Note this is not optimized for speed!
 
     //Check in slice collection which one are playing and add those to the buffer 
     current  = &EmptySlice;
-    for (int i = 0; i < (int) nframes; i++)
-    {
+    float * mix = malloc(sizeof(float) * nframes);
     while(current->next != NULL)
         {
-            if(current->next->isPlaying==1 && current->next->pos < current->next->length)
+            if(current->next->isPlaying==1 && current->next->pos + nframes < current->next->length)
         {
-            outputBufferL[i] = current->next->stream[i+current->next->pos];
-            outputBufferR[i] = current->next->stream[i+current->next->pos];
-            current->next->pos++;
+            for (int i = 0; i < (int) nframes; i++)
+                {
+                    mix[i] += current->next->stream[current->next->pos + i];
+                }
+            current->next->pos+=nframes;
+           
         }
             else 
            {
@@ -94,13 +97,14 @@ int process(jack_nframes_t nframes, void* emptyshell)
            }
             
         current = current->next;
-        }
+        
     //outputBufferL[i] = sample1[i]; 
     //outputBufferR[i] = sample1[i]; 
-    
+    printf("%i \n",*&EmptySlice.next->pos); 
     }
+            memcpy(outputBufferL, mix, sizeof(float)*nframes);
+            memcpy(outputBufferR, mix, sizeof(float)*nframes);
  
-    printf("\n pos : %i \n", *&EmptySlice.next->pos);
   
   return 0;
 }
@@ -124,7 +128,6 @@ int main(int argc, char * argv[])
   //SliceCreate( Object1, "forward", 144000, 144000);
   //SliceCreate( Object1, "forward", 288000, 144000);
   //SliceCreate( Object1, "forward", 432000, 144000);
-  struct Slice *current  =  malloc(sizeof(struct Slice));
 
   struct Slice *ptr = &EmptySlice; 
   EmptySlice.index = 0;
