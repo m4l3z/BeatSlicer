@@ -1,0 +1,46 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+AUDIOOBJECT_H	../BsJack/AudioObject.h	2;"	d
+AudioObject	../BsJack/AudioObject.h	/^struct AudioObject {$/;"	s
+BPM_to_time	../BsJack/time.h	/^double BPM_to_time (float BPM, float nbeats)$/;"	f
+EmptySlice	../BsJack/Slice.h	/^}EmptySlice;$/;"	v	typeref:struct:Slice
+Envelope	../BsJack/Slice.h	/^struct Envelope {$/;"	s
+GenerateSample	../BsJack/AudioObject.c	/^float * GenerateSample(struct AudioObject Object, int nframes)$/;"	f
+LoadFile	../BsJack/LoadFile.h	/^struct AudioObject LoadFile(char * path)$/;"	f
+Object1	../BsJack/AudioObject.h	/^}Object1;$/;"	v	typeref:struct:AudioObject
+SLICE_H	../BsJack/Slice.h	2;"	d
+Slice	../BsJack/Slice.h	/^struct Slice {$/;"	s
+SliceAutoSlice	../BsJack/Slice.c	/^int SliceAutoSlice( struct AudioObject Object, char * mode, int div)$/;"	f
+SliceCreate	../BsJack/Slice.c	/^int SliceCreate( struct AudioObject Object, char * mode, int Pos, int Size, int key)$/;"	f
+SliceDelete	../BsJack/Slice.c	/^int SliceDelete(int index)$/;"	f
+SliceResize	../BsJack/Slice.c	/^int SliceResize(int index, int pos, int size)$/;"	f
+attack_t	../BsJack/Slice.h	/^    double attack_t;$/;"	m	struct:Envelope
+decay_t	../BsJack/Slice.h	/^    double decay_v, decay_t;$/;"	m	struct:Envelope
+decay_v	../BsJack/Slice.h	/^    double decay_v, decay_t;$/;"	m	struct:Envelope
+envelope	../BsJack/Slice.h	/^    struct Envelope envelope;$/;"	m	struct:Slice	typeref:struct:Slice::Envelope
+index	../BsJack/Slice.h	/^    int index;$/;"	m	struct:Slice
+inputPort	../BsJack/jackClient.c	/^jack_port_t* inputPort = 0;$/;"	v
+isPlaying	../BsJack/Slice.h	/^    int isPlaying;$/;"	m	struct:Slice
+key	../BsJack/Slice.h	/^    int key;$/;"	m	struct:Slice
+length	../BsJack/Slice.h	/^    int length;$/;"	m	struct:Slice
+main	../BsJack/jackClient.c	/^int main(int argc, char * argv[])$/;"	f
+next	../BsJack/Slice.h	/^    struct Slice *next;$/;"	m	struct:Slice	typeref:struct:Slice::Slice
+outputPortL	../BsJack/jackClient.c	/^jack_port_t* outputPortL = 0;$/;"	v
+outputPortR	../BsJack/jackClient.c	/^jack_port_t* outputPortR = 0;$/;"	v
+playmode	../BsJack/Slice.h	/^    char * playmode; \/\/ Straight, reverse, $/;"	m	struct:Slice
+pos	../BsJack/AudioObject.h	/^    int pos;$/;"	m	struct:AudioObject
+pos	../BsJack/Slice.h	/^    int pos;$/;"	m	struct:Slice
+previous	../BsJack/Slice.h	/^    struct Slice *previous;$/;"	m	struct:Slice	typeref:struct:Slice::Slice
+process	../BsJack/jackClient.c	/^int process(jack_nframes_t nframes, void* emptyshell)$/;"	f
+release_t	../BsJack/Slice.h	/^    double release_t;$/;"	m	struct:Envelope
+size	../BsJack/AudioObject.h	/^    int size;$/;"	m	struct:AudioObject
+source	../BsJack/Slice.h	/^    struct AudioObject source;$/;"	m	struct:Slice	typeref:struct:Slice::AudioObject
+stream	../BsJack/AudioObject.h	/^    float * stream;$/;"	m	struct:AudioObject
+stream	../BsJack/Slice.h	/^    float * stream;$/;"	m	struct:Slice
+sustain_t	../BsJack/Slice.h	/^    double sustain_v, sustain_t;$/;"	m	struct:Envelope
+sustain_v	../BsJack/Slice.h	/^    double sustain_v, sustain_t;$/;"	m	struct:Envelope
+time_to_frame	../BsJack/time.h	/^int time_to_frame(float time, int samplerate)$/;"	f
