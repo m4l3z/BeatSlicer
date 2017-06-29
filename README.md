@@ -9,4 +9,4 @@ TODO:
 - Make a proper midi implementation
 - Create a mixer structure with basic functions to avoid clipping
 
-
+Contributors welcome ! 
