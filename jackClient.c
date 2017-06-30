@@ -15,6 +15,7 @@
 #include "LoadFile.h"
 #include "AudioObject.c"
 #include "Slice.c"
+#include "Midi.h"
 // declare two "jack_port_t" pointers, which will each represent a port
 // in the JACK graph (ie: Connections tab in QJackCtl)
 jack_port_t* inputPort = 0;
