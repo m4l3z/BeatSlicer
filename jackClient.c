@@ -91,12 +91,12 @@ int process(jack_nframes_t nframes, void* emptyshell)
         {
             for (int i = 0; i < (int) nframes; i++)
                 {
-                    mix[i] += (float) SliceVolume(current->next) * current->next->stream[current->next->pos + i] ;
+                    mix[i] += (float) SliceVolume(current->next) * current->next->stream[current->next->pos] ;
+                    current->next->pos++;
                     if(mix[i]>1) 
                     {mix[i]=1;}
                 }
-            current->next->pos+=nframes;
-           
+         
         }
             else 
            {
