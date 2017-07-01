@@ -16,6 +16,13 @@ struct Envelope {
 
 };
 
+struct Playback {
+    char * state;
+    int pos;
+    struct Playback *next;
+
+};
+
 //Definition of Slice 
 
 struct Slice {
