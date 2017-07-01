@@ -46,7 +46,7 @@ int SliceDelete(int index);
 int SliceResize(int index, int pos, int size);
 int SliceAutoSlice( struct AudioObject Object, char * mode, int div);
 float * SliceGenerateSample(struct Slice * slice, int nframe, int speed);
-float SliceVolume(struct Slice * slice);
+float SliceVolume(struct Slice * slice, int pos);
 int SliceStartPlayback(struct Slice * slice);
 
 

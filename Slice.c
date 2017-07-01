@@ -46,6 +46,11 @@ int SliceCreate( struct AudioObject Object, char * mode, int Pos, int Size, int 
     next->next->envelope.sustain_t = next->next->length*0.6; 
     next->next->envelope.release_t = next->next->length*0.7; 
 
+    //Initialize playback
+    next->next->playback.state = "done";
+    next->next->playback.pos = 0;
+    next->next->playback.next = NULL;
+
 
     return 0;
 
@@ -132,25 +137,25 @@ float * SliceGenerateSample(struct Slice * slice, int nframe, int speed)
 }
 
 
-float SliceVolume(struct Slice * slice)
+float SliceVolume(struct Slice * slice, int pos)
 {
-    if (slice->pos >= 0 && slice->pos < slice->envelope.decay_t)
+    if (pos >= 0 && pos < slice->envelope.decay_t)
     {
-        return (slice->envelope.decay_v) * (slice->pos / slice->envelope.attack_t) ;
+        return (slice->envelope.decay_v) * (pos / slice->envelope.attack_t) ;
     }
     
-    if (slice->pos >= slice->envelope.decay_t && slice->pos < slice->envelope.sustain_t)
+    if (pos >= slice->envelope.decay_t && pos < slice->envelope.sustain_t)
     {
-        return (slice->envelope.decay_v) - (slice->envelope.decay_v - slice->envelope.sustain_v)*((slice->pos-slice->envelope.attack_t)/slice->envelope.decay_t);  
+        return (slice->envelope.decay_v) - (slice->envelope.decay_v - slice->envelope.sustain_v)*((pos-slice->envelope.attack_t)/slice->envelope.decay_t);  
     }
 
-   if ( slice->pos >= slice->envelope.sustain_t && slice->pos < slice->envelope.release_t)
+   if ( pos >= slice->envelope.sustain_t && pos < slice->envelope.release_t)
    {
        return slice->envelope.sustain_v;
    }
-   if ( slice->pos >= slice->envelope.release_t && slice-> pos <= slice->length )
+   if ( pos >= slice->envelope.release_t &&  pos <= slice->length )
    {
-       return slice->envelope.sustain_v - (slice->envelope.sustain_v * ((slice->pos- slice->envelope.release_t)/(slice->length - slice->envelope.release_t)));
+       return slice->envelope.sustain_v - (slice->envelope.sustain_v * ((pos- slice->envelope.release_t)/(slice->length - slice->envelope.release_t)));
 }
 return 0;
 }
