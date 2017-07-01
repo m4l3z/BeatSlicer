@@ -47,13 +47,14 @@ int process(jack_nframes_t nframes, void* emptyshell)
   jack_nframes_t event_count = jack_midi_get_event_count(inputBuffer);
   // one by one, copying them across. Try multiplying the input by 0.5,
   // it will decrease the volume...
+  struct Midi_Event test;
   for ( int i = 0; i < (int) nframes; i++)
   {
     if(event_count > 0)
     {
     jack_midi_event_get(&in_event, inputBuffer, i);
-    //printf("Type (159 = NOTEON, 143 = NOTEOFF) : %i , Note : %i, Velocity : %i \n", in_event.buffer[0],
-     //       in_event.buffer[1], in_event.buffer[2]);
+    test = DataToMidiEvent(in_event);
+    printf("Type  %s, Channel : %i , Note : %i, Velocity : %i \n", test.type, test.channel, test.note, test.velocity); 
     
     current =  &EmptySlice;
     while(current->next != NULL)
