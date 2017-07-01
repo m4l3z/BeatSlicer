@@ -154,3 +154,15 @@ float SliceVolume(struct Slice * slice)
 }
 return 0;
 }
+
+int SliceStartPlayback(struct Slice * slice)
+{
+    struct Playback * current;
+    //find the last playback in the list 
+    for(current = &slice->playback; current->next->state =! "done" ; current = current->next){}
+    current->next = malloc(sizeof(struct Playback));
+    current->next->pos = 0;
+    current->next->state = "playing";
+    current->next->next = NULL;
+    return 0;
+}

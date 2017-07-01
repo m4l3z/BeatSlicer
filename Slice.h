@@ -37,12 +37,17 @@ struct Slice {
     int index;
     int key;
     struct AudioObject source;
+    struct Playback playback;
 }EmptySlice;
 
 
 int SliceCreate( struct AudioObject Object, char * mode, int Pos, int Size, int key);
 int SliceDelete(int index);
 int SliceResize(int index, int pos, int size);
+int SliceAutoSlice( struct AudioObject Object, char * mode, int div);
+float * SliceGenerateSample(struct Slice * slice, int nframe, int speed);
+float SliceVolume(struct Slice * slice);
+int SliceStartPlayback(struct Slice * slice);
 
 
 #endif
