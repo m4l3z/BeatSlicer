@@ -30,4 +30,5 @@ struct Midi_Event DataToMidiEvent( jack_midi_event_t in_event)
 
 char * MidiNoteToNote(int note);
 int NoteToMidiNote(char * note);
+int MidiTrigger( struct Midi_Event midi_event);
  
