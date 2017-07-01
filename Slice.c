@@ -158,11 +158,19 @@ return 0;
 int SliceStartPlayback(struct Slice * slice)
 {
     struct Playback * current;
-    //find the last playback in the list 
-    for(current = &slice->playback; current->next->state =! "done" ; current = current->next){}
-    current->next = malloc(sizeof(struct Playback));
-    current->next->pos = 0;
-    current->next->state = "playing";
-    current->next->next = NULL;
+    //find an available playback in the list or the last one if there isnt any 
+    for(current = &slice->playback;   current->next != NULL || current->next->state != "done"; current = current->next){}
+    if(current->next==NULL)
+    {
+        current->next = malloc(sizeof(struct Playback));
+        current->next->pos = 0;
+        current->next->state = "playing";
+        current->next->next = NULL;
+    }
+    else if (current->next->state == "done")
+    {
+        current->next->pos =0;
+        current->next->state = "playing";
+    }
     return 0;
 }
