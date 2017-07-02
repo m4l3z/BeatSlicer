@@ -38,14 +38,11 @@ int MidiTrigger(struct Midi_Event midievent)
     while(currentS->next != NULL)
         {
             currentP = &currentS->next->playback;
-            // IT DOESNT WORK BECAUSE IM STUPID AND IM JUST MAKING AN INTERNAL COPY OF THE CONTENT 
-            // OF THE POINTER AND NOT ACTUALLY UPDAtING THE VALUES !!
            if (currentS->next->key == midievent.note)
             {
                 int playbackleft = 1; 
                 while(playbackleft) 
                     {
-                        printf("Slice at %i , mode %s and first playback state %s \n", &currentS->next,currentS->next->playmode, currentP->state); 
                         if(currentP->state == "playing" && midievent.type == "NOTE_ON")
                         {
                             
@@ -56,13 +53,28 @@ int MidiTrigger(struct Midi_Event midievent)
                         }
                         else if (currentP->state =="playing" && midievent.type == "NOTE_OFF")
                         {
-                            if(currentS->next->playmode == "FW_P") currentP->pos =0 ;
-                            if(currentS->next->playmode == "FW_U") currentP->state = "paused";
+                            if(currentS->next->playmode == "FW_P") 
+                                {
+                                    currentP->pos =0 ;
+                                    currentP->state = "done";
+                                }
+                            if(currentS->next->playmode == "FW_U")
+                            {
+                                currentP->state = "paused";
+                            }
 
                         }
-                        else if (currentP->state =="paused") //&& midievent.type == "NOTE_ON")
+                        else if (currentP->state =="paused" && midievent.type == "NOTE_ON")
                         {
-                            currentP->state == "playing";
+                            if(currentP->pos < currentS->next->length)
+                            {
+                                currentP->state = "playing";
+                            }
+                            else
+                            {
+                                currentP->state = "done";
+                                currentP->pos = 0;
+                            }
                         }
                         else if (currentP->state == "done" && midievent.type == "NOTE_ON")
                         {
@@ -76,6 +88,7 @@ int MidiTrigger(struct Midi_Event midievent)
                         else{
                         currentP = currentP->next;
                         }
+                        printf("Slice at %i , mode %s and first playback state %s \n", &currentS->next,currentS->next->playmode, currentP->state); 
                     }
                 }
             currentS = currentS->next;
