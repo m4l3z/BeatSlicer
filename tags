@@ -13,6 +13,7 @@ Envelope	Slice.h	/^struct Envelope {$/;"	s
 GenerateSample	AudioObject.c	/^float * GenerateSample(struct AudioObject Object, int nframes)$/;"	f
 LoadFile	LoadFile.h	/^struct AudioObject LoadFile(char * path)$/;"	f
 MidiNoteToNote	Midi.c	/^char * MidiNoteToNote(int note)$/;"	f
+MidiTrigger	Midi.c	/^int MidiTrigger( struct Midi_Event midi_event)$/;"	f
 Midi_Event	Midi.h	/^struct Midi_Event {$/;"	s
 Mixer	Mixer.h	/^struct Mixer { $/;"	s
 Mixer1	Mixer.h	/^}Mixer1;$/;"	v	typeref:struct:Mixer

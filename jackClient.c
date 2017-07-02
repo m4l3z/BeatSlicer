@@ -58,62 +58,21 @@ int process(jack_nframes_t nframes, void* emptyshell)
     test = DataToMidiEvent(in_event);
     printf("Type  %s, Channel : %i , Note : %i, Velocity : %i \n", test.type, test.channel, test.note, test.velocity); 
     
-    current =  &EmptySlice;
-    while(current->next != NULL)
-            {
-                if(in_event.buffer[1] == current->next->key )
-                {
-                        if (current->next->isPlaying == 1 && in_event.buffer[0] == 159)
-                        {
-                            current->next->pos = 0;
-                        }
-
-                        if (current->next->isPlaying == 0 && in_event.buffer[0] == 159)
-                        {
-                            current->next->pos = 0;
-                            current->next->isPlaying =1;
-                        }
-
-                       
-        }
-                current= current->next;
+    MidiTrigger(test); 
     }
-    
     event_count = 0;
 
-  }
+ 
   } 
     // copy data from input to output. Note this is not optimized for speed!
 
     //Check in slice collection which one are playing and add those to the buffer 
-    current  = &EmptySlice;
-    float * mix = malloc(sizeof(float) * nframes);
-    while(current->next != NULL)
-        {
-            if(current->next->isPlaying==1 && current->next->pos + nframes < current->next->length)
-        {
-            for (int i = 0; i < (int) nframes; i++)
-                {
-                    mix[i] += (float) SliceVolume(current->next, current->next->pos) * current->next->stream[current->next->pos] ;
-                    current->next->pos++;
-                    if(mix[i]>1) 
-                    {mix[i]=1;}
-                }
-         
-        }
-            else 
-           {
-               current->next->isPlaying =0;
-               current->next->pos=0;
-           }
-            
-        current = current->next;
-        
-    //outputBufferL[i] = sample1[i]; 
-    //outputBufferR[i] = sample1[i]; 
-    }
-            memcpy(outputBufferL, mix, sizeof(float)*nframes);
-            memcpy(outputBufferR, mix, sizeof(float)*nframes);
+       
+       struct Mixer* mainmix = malloc(sizeof(struct Mixer));
+       MixerUpdate(mainmix, nframes);
+       //printf("Mixer : volume : %f , voices : %i, frames per stream %i \n", Mixer1.volume, Mixer1.voices, (sizeof(Mixer1.streamR)/sizeof(float)));
+       memcpy(outputBufferL, mainmix->streamL, sizeof(float)*nframes);
+       memcpy(outputBufferR, mainmix->streamR, sizeof(float)*nframes);
  
   
   return 0;
@@ -142,11 +101,11 @@ int main(int argc, char * argv[])
   struct Slice *ptr = &EmptySlice; 
   EmptySlice.index = 0;
   EmptySlice.length =0;
-  EmptySlice.playmode = "forward";
+  EmptySlice.playmode = "FW_P";
     
 
   //printf("%i", sizeof(Object1.stream[2]) * sizeof(float));
-  SliceAutoSlice(Object1, "forward", 16);
+  SliceAutoSlice(Object1, "FW_U", 12);
     while(ptr->next != NULL)
         {
             ptr->next->pos = 0;
