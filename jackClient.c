@@ -105,7 +105,7 @@ int main(int argc, char * argv[])
     
 
   //printf("%i", sizeof(Object1.stream[2]) * sizeof(float));
-  SliceAutoSlice(Object1, "FW_U", 12);
+  SliceAutoSlice(Object1, "FW_P", 12);
     while(ptr->next != NULL)
         {
             ptr->next->pos = 0;

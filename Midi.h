@@ -34,10 +34,10 @@ struct Midi_Event DataToMidiEvent( jack_midi_event_t in_event)
 int MidiTrigger(struct Midi_Event midievent)
 {
     struct Slice* currentS = &EmptySlice;
-    struct Playback currentP;
+    struct Playback * currentP;
     while(currentS->next != NULL)
         {
-            currentP = currentS->next->playback;
+            currentP = &currentS->next->playback;
             // IT DOESNT WORK BECAUSE IM STUPID AND IM JUST MAKING AN INTERNAL COPY OF THE CONTENT 
             // OF THE POINTER AND NOT ACTUALLY UPDAtING THE VALUES !!
            if (currentS->next->key == midievent.note)
@@ -45,37 +45,36 @@ int MidiTrigger(struct Midi_Event midievent)
                 int playbackleft = 1; 
                 while(playbackleft) 
                     {
-                        printf("Slice at %i , mode %s and first playback state %s \n", &currentS->next,currentS->next->playmode, currentP.state); 
-                        if(currentP.state == "playing" && midievent.type == "NOTE_ON")
+                        printf("Slice at %i , mode %s and first playback state %s \n", &currentS->next,currentS->next->playmode, currentP->state); 
+                        if(currentP->state == "playing" && midievent.type == "NOTE_ON")
                         {
                             
                             if(currentS->next->playmode == "FW_S") SliceStartPlayback(currentS->next);
-                            if(currentS->next->playmode == "FW_P") currentP.pos = 0;
-                            if(currentS->next->playmode == "FW_U") currentP.state = "paused";
+                            if(currentS->next->playmode == "FW_P") currentP->pos = 0;
+                            if(currentS->next->playmode == "FW_U") currentP->state = "playing";
                             
                         }
-                        else if (currentP.state =="playing" && midievent.type == "NOTE_OFF")
+                        else if (currentP->state =="playing" && midievent.type == "NOTE_OFF")
                         {
-                            if(currentS->next->playmode == "FW_P") currentP.pos =0 ;
-                            if(currentS->next->playmode == "FW_U") currentP.state = "paused";
+                            if(currentS->next->playmode == "FW_P") currentP->pos =0 ;
+                            if(currentS->next->playmode == "FW_U") currentP->state = "paused";
 
                         }
-                        else if (currentP.state =="paused" && midievent.type == "NOTE_ON")
+                        else if (currentP->state =="paused") //&& midievent.type == "NOTE_ON")
                         {
-                            currentP.state == "playing";
+                            currentP->state == "playing";
                         }
-                        else if (currentP.state == "done" && midievent.type == "NOTE_ON")
+                        else if (currentP->state == "done" && midievent.type == "NOTE_ON")
                         {
                             if(currentS->next->playmode == "FW_S") SliceStartPlayback(currentS->next);
-                            if(currentS->next->playmode == "FW_P"){
-                                currentP.pos = 0;
-                                currentP.state ="playing";}
-                            if(currentS->next->playmode == "FW_U") currentP.state = "playing";
+                            if(currentS->next->playmode == "FW_P" || currentS->next->playmode == "FW_U"){
+                                currentP->pos = 0;
+                                currentP->state ="playing";}
                             
                         }
-                        if(currentP.next == NULL) playbackleft=0;
+                        if(currentP->next == NULL) playbackleft=0;
                         else{
-                        currentP = *currentP.next;
+                        currentP = currentP->next;
                         }
                     }
                 }

@@ -166,7 +166,7 @@ int SliceStartPlayback(struct Slice * slice)
     //find an available playback in the list or the last one if there isnt any 
     for(current = &slice->playback;   current->next != NULL || current->next->state != "done"; current = current->next){}
     if(current->next==NULL)
-/bin/bash: q: command not found
+    {
         current->next = malloc(sizeof(struct Playback));
         current->next->pos = 0;
         current->next->state = "playing";
