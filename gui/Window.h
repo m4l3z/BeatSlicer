@@ -19,8 +19,8 @@
 //Creations of the stuff I will need
 //Waveform
 //Mixer Histogram
-//Buttons
-//Sliders
+//Buttons DONE 
+//Sliders DONE
 //Knobs
 //pop ups 
 //drop down menus
@@ -33,17 +33,18 @@
 struct Pos{
     int x;
     int y;
-};
+}Mouse;
 
 struct Button{
     char * name;
     SDL_Rect pos;
     SDL_Surface *img0;
     SDL_Surface *img1;
+    SDL_Surface *current;
     int state;
 }Button1;
 
-struct Button  CreateButton(char * name, int x, int y, int w, int h, SDL_Surface * enabled, SDL_Surface *idle)
+struct Button CreateButton(char * name, int x, int y, int w, int h, SDL_Surface * enabled, SDL_Surface *idle)
 {
     struct Button button;
     button.name = name;
@@ -53,13 +54,51 @@ struct Button  CreateButton(char * name, int x, int y, int w, int h, SDL_Surface
     button.pos.h =h;
     button.img0 = idle;
     button.img1 = enabled;
+    button.current = button.img0;
     button.state =0;
     return button;
 }
-    
+
+int inButton(struct Button button, int x, int y)
+{
+    if( x >= button.pos.x && x <= button.pos.x + button.pos.w && y >= button.pos.y && y <= button.pos.y + button.pos.h) return 1;
+    else return 0;
+}
+
+struct Slider{
+    char * name;
+    SDL_Rect pos, headpos;
+    int x;
+    SDL_Surface * back;
+    SDL_Surface *head;
+    int state;
+}Slider1;
+
+struct Slider CreateSlider(char * name, int x, int y, int w, int h, SDL_Surface * back, SDL_Surface *head)
+{
+    struct Slider slider;
+    slider.name = name;
+    slider.state = 0;
+    slider.pos.x = x;
+    slider.pos.y = y;
+    slider.pos.w = w;
+    slider.pos.h = h;
+    slider.back = back;
+    slider.head = head;
+    slider.headpos.x =x+ 1;
+    slider.headpos.y =y+ 80;
+    slider.headpos.w = 20;
+    slider.headpos.h =  20;
+    return slider;
+}
 #endif  
 
-
+int inSlider(struct Slider slider, int x, int y)
+{
+    if( x >= slider.pos.x && x <= slider.pos.x + slider.pos.w && y >= slider.pos.y +slider.headpos.h/2 && y <= slider.pos.y + slider.pos.h - slider.headpos.h/2) return 1;
+    else return 0;
+}
+ 
 
 
 
