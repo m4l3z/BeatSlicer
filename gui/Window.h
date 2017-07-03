@@ -91,7 +91,6 @@ struct Slider CreateSlider(char * name, int x, int y, int w, int h, SDL_Surface 
     slider.headpos.h =  20;
     return slider;
 }
-#endif  
 
 int inSlider(struct Slider slider, int x, int y)
 {
@@ -101,8 +100,37 @@ int inSlider(struct Slider slider, int x, int y)
  
 
 
+struct Knob {
+    char * name;
+    SDL_Rect pos;
+    double angle;
+    int state;
+    SDL_Surface * back;
+    SDL_Surface * head;
+}Knob1;
 
+struct Knob CreateKnob (char * name, int x, int y, int w, int h, SDL_Surface * back, SDL_Surface *head)
+{
+    struct Knob knob;
+    knob.name = name;
+    knob.angle = 0;
+    knob.pos.x = x;
+    knob.pos.y = y;
+    knob.pos.w = w;
+    knob.pos.h = h;
+    knob.back = back;
+    knob.head = head;
+    knob.state =0;
+    return knob;
+}
 
+int inKnob(struct Knob knob, int x, int y)
+{
+    if( x >= knob.pos.x && x <= knob.pos.x + knob.pos.w && y >= knob.pos.y && y <= knob.pos.y + knob.pos.h) return 1;
+    else return 0;
+}
+
+#endif  
 
 
 
