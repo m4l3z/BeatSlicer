@@ -3,8 +3,12 @@
 
 #include <stdio.h>
 #include "SDL.h"
+#include <math.h>
 #include "SDL/SDL_image.h"
 #include "SDL/SDL_ttf.h"
+#include "../AudioObject.h"
+#include "../LoadFile.h"
+
 
 //theme
 //colors and stuff
@@ -128,6 +132,65 @@ int inKnob(struct Knob knob, int x, int y)
 {
     if( x >= knob.pos.x && x <= knob.pos.x + knob.pos.w && y >= knob.pos.y && y <= knob.pos.y + knob.pos.h) return 1;
     else return 0;
+}
+
+struct Waveform {
+    char * name;
+    SDL_Surface * back; 
+    SDL_Surface * front; 
+    struct AudioObject  object;
+    SDL_Surface *  colour;
+    SDL_Rect pos, blit;
+}Waveform1;
+
+
+struct Waveform CreateWaveform(char *name, int x, int y, int w, int h, SDL_Surface *back )
+{
+    struct Waveform waveform;
+    waveform.name = name;
+    waveform.back = back;
+    waveform.colour = SDL_CreateRGBSurface(0, 1, 1, 32, 0, 0, 0, 0); 
+    SDL_FillRect(waveform.colour, &waveform.colour->clip_rect, SDL_MapRGB(waveform.colour->format,34,209,65));
+    
+    waveform.object = LoadFile("../sample.wav");
+
+    int step = waveform.object.size/400;
+    Uint32 *pixel;
+    for(int i = 0; i < w; i++)
+    {
+        waveform.pos.x = i;
+        waveform.pos.y = 75 - (75*waveform.object.stream[i*step]);
+        SDL_BlitSurface(waveform.colour, NULL, back, &waveform.pos);
+        if (waveform.pos.y <=75) {
+            for (int j = 75; j>=waveform.pos.y; j--) {
+                     waveform.blit.y = j;
+                     waveform.blit.x = i;
+                     SDL_FillRect(waveform.colour, &waveform.colour->clip_rect, SDL_MapRGB(waveform.colour->format,34 ,209- 1.8*j ,65 ));
+
+                     SDL_BlitSurface(waveform.colour, NULL, back, &waveform.blit);
+            }
+        }
+        else if (waveform.pos.y > 75)
+        {
+            for (int j = 75; j<=waveform.pos.y; j++) {
+                waveform.blit.y = j;
+                waveform.blit.x = i;
+                     SDL_FillRect(waveform.colour, &waveform.colour->clip_rect, SDL_MapRGB(waveform.colour->format,34 ,209+ 1.8*j ,65 ));
+                SDL_BlitSurface(waveform.colour, NULL, back, &waveform.blit);
+        }
+        }
+                    
+       
+        }
+
+    SDL_Flip(back);
+    waveform.pos.x = x;
+    waveform.pos.y = y;
+    waveform.pos.w = w;
+    waveform.pos.h = h;
+   
+    //
+    return waveform;
 }
 
 #endif  

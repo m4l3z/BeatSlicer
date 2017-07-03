@@ -16,18 +16,22 @@ int main(int argc, char *arvg[])
     IMG_Init(IMG_INIT_PNG);
     screen = SDL_SetVideoMode(640, 480, 16, SDL_SWSURFACE);
     SDL_WM_SetCaption("Window","Window");
-    SDL_Surface *idle, *enabled, *back, *head, *knobback, *knobhead, *rotation;
+    SDL_Surface *idle, *enabled, *back, *head, *knobback, *knobhead, *rotation, *wavback;
     idle =SDL_LoadBMP("idle.bmp"); 
     enabled = SDL_LoadBMP("enabled.bmp");
 
     back = SDL_LoadBMP("sliderback.bmp");
     head = IMG_Load("sliderfront.png");
-    //SDL_SetAlpha(head, SDL_SRCALPHA, 128);
     knobback = SDL_LoadBMP("knobback.bmp");
     knobhead = IMG_Load("knobhead.png");
-    Button1 = CreateButton("test", 200, 200, 48, 48, enabled, idle) ;
-    Slider1 =CreateSlider("slider test", 300,150, 20,100, back, head); 
-    Knob1 = CreateKnob("knob test", 400,200,48,48,knobback, knobhead);
+    wavback = SDL_LoadBMP("wavback.bmp");
+    Button1 = CreateButton("test", 40, 40, 48, 48, enabled, idle) ;
+
+    Slider1 =CreateSlider("slider test", 100,40, 20,100, back, head); 
+    Knob1 = CreateKnob("knob test", 40,90,48,48,knobback, knobhead);
+
+    Waveform1 = CreateWaveform("waveform test", 140, 40, 400, 150,wavback);
+    
     int done = 0;
     while(!done)
     {
@@ -64,15 +68,16 @@ int main(int argc, char *arvg[])
         } 
                     SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format,50,50,50));
                     Button1.current =( Button1.state == 1 ? Button1.img1 : Button1.img0);  
-                    
+                     
                     SDL_BlitSurface(Button1.current, NULL, screen, &Button1.pos);
                     SDL_BlitSurface(Slider1.back, NULL, screen, &Slider1.pos);
                     SDL_BlitSurface(Slider1.head, NULL, screen, &Slider1.headpos); 
                     SDL_BlitSurface(Knob1.back, NULL, screen, &Knob1.pos);
-                    SDL_BlitSurface(Knob1.head, NULL, screen, &Knob1.pos); 
+                    //SDL_BlitSurface(Knob1.head, NULL, screen, &Knob1.pos); 
+                    SDL_BlitSurface(Waveform1.back, NULL, screen, &Waveform1.pos); 
                     rotation = rotozoomSurface(Knob1.head, Knob1.angle, 1.0, 1);
-                    rotation->clip_rect.x = 400 - rotation->w/2 + Knob1.pos.h/2;
-                    rotation->clip_rect.y = 200 - rotation->h/2 + Knob1.pos.w/2;
+                    rotation->clip_rect.x = 40 - rotation->w/2 + Knob1.pos.h/2;
+                    rotation->clip_rect.y = 90 - rotation->h/2 + Knob1.pos.w/2;
                     SDL_BlitSurface(rotation, NULL, screen, &rotation->clip_rect); 
                     SDL_Flip(screen);
 
