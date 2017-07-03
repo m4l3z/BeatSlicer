@@ -113,7 +113,7 @@ struct Knob CreateKnob (char * name, int x, int y, int w, int h, SDL_Surface * b
 {
     struct Knob knob;
     knob.name = name;
-    knob.angle = 0;
+    knob.angle = 90;
     knob.pos.x = x;
     knob.pos.y = y;
     knob.pos.w = w;
