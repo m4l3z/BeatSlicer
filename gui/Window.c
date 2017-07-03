@@ -66,7 +66,7 @@ int main(int argc, char *arvg[])
             if(event.button.y - Knob1.pos.y - (Knob1.pos.h/2) >0 && event.button.y - Knob1.pos.y - (Knob1.pos.h/2) <=100) Knob1.angle = 2*(event.button.y - Knob1.pos.y - (Knob1.pos.h/2));
             else if(event.button.y - Knob1.pos.y - (Knob1.pos.h/2) <0 && event.button.y - Knob1.pos.y - (Knob1.pos.h/2) >=-100) Knob1.angle = 2*(event.button.y - Knob1.pos.y - (Knob1.pos.h/2));
         } 
-                    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format,50,50,50));
+                    SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format,40,40,40));
                     Button1.current =( Button1.state == 1 ? Button1.img1 : Button1.img0);  
                      
                     SDL_BlitSurface(Button1.current, NULL, screen, &Button1.pos);

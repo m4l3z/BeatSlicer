@@ -159,7 +159,7 @@ struct Waveform CreateWaveform(char *name, int x, int y, int w, int h, SDL_Surfa
     for(int i = 0; i < w; i++)
     {
         waveform.pos.x = i;
-        waveform.pos.y = 75 - (75*waveform.object.stream[i*step]);
+        waveform.pos.y = 75 - (75*waveform.object.stream[i+50919]);
         SDL_BlitSurface(waveform.colour, NULL, back, &waveform.pos);
         if (waveform.pos.y <=75) {
             for (int j = 75; j>=waveform.pos.y; j--) {
