@@ -44,8 +44,11 @@ int process(jack_nframes_t nframes, void* emptyshell)
   //Object1.pos+= nframes;
   // this is the intresting part, we work with each sample of audio data
   //struct Slice *ptr  = EmptySlice.next;
+#if 0
   struct Slice *current  =  malloc(sizeof(struct Slice));
   current =  &EmptySlice;
+#endif
+
   jack_nframes_t event_count = jack_midi_get_event_count(inputBuffer);
   // one by one, copying them across. Try multiplying the input by 0.5,
   // it will decrease the volume...
@@ -68,11 +71,12 @@ int process(jack_nframes_t nframes, void* emptyshell)
 
     //Check in slice collection which one are playing and add those to the buffer 
        
-       struct Mixer* mainmix = malloc(sizeof(struct Mixer));
-       MixerUpdate(mainmix, nframes);
+       struct Mixer mainmix;
+       memset(&mainmix, 0, sizeof(struct Mixer));
+       MixerUpdate(&mainmix, nframes);
        //printf("Mixer : volume : %f , voices : %i, frames per stream %i \n", Mixer1.volume, Mixer1.voices, (sizeof(Mixer1.streamR)/sizeof(float)));
-       memcpy(outputBufferL, mainmix->streamL, sizeof(float)*nframes);
-       memcpy(outputBufferR, mainmix->streamR, sizeof(float)*nframes);
+       memcpy(outputBufferL, mainmix.streamL, sizeof(float)*nframes);
+       memcpy(outputBufferR, mainmix.streamR, sizeof(float)*nframes);
  
   
   return 0;
